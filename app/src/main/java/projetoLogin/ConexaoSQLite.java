@@ -16,7 +16,7 @@ public class ConexaoSQLite {
     
     public Connection conectar(){
         Connection conexao = null; //Declara uma variavel para armazenar a conexão
-        String url = "jdbc:sqlite:usuariosNovo.db"; //Defiine o caminho do banco de dados SQLite
+        String url = "jdbc:sqlite:usuarios.db"; //Defiine o caminho do banco de dados SQLite
         
         try{
             //Tenta estabelecer a conxão com o banco de dados usando a url fornecida

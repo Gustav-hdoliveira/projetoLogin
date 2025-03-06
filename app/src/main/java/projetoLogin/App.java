@@ -10,5 +10,6 @@ public class App {
     public static void main(String[] args) {
         ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
         Connection conexao = conexaoSQLite.conectar();
+        CriarTabela.criarTabelaUsuarios(conexao);
     }
 }

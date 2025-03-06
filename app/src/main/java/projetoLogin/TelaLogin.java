@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package projetoLogin;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -10,12 +15,19 @@ package projetoLogin;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
+    ConexaoSQLite conexaoSQLite = new ConexaoSQLite();
+    Connection conexao = conexaoSQLite.conectar();
+    
+    
     /**
      * Creates new form TelaLogin
      */
     public TelaLogin() {
         initComponents();
+        CriarTabela.criarTabelaUsuarios(conexao);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,7 +43,7 @@ public class TelaLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         loginBTN = new javax.swing.JButton();
         registBTN = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        senhaTxtField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,9 +80,9 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        senhaTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                senhaTxtFieldActionPerformed(evt);
             }
         });
 
@@ -90,7 +102,7 @@ public class TelaLogin extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(userTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(senhaTxtField))
                 .addContainerGap(131, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,7 +115,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(senhaTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
                 .addComponent(loginBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -119,11 +131,19 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_userTxtFieldActionPerformed
 
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
-        // TODO add your handling code here:
+        String nomeUser = userTxtField.getText();
+        String senhaUser = senhaTxtField.getText();
+        BuscarUsuario.buscarUsuario(conexao, nomeUser, senhaUser);
     }//GEN-LAST:event_loginBTNActionPerformed
 
     private void registBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registBTNActionPerformed
-        // TODO add your handling code here:
+        try {
+            String nome = userTxtField.getText();
+            String senha = senhaTxtField.getText();
+            InserirUsuario.inserirUsuario(conexao, nome, senha);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_registBTNActionPerformed
 
     private void userTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userTxtFieldFocusGained
@@ -138,9 +158,9 @@ public class TelaLogin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_userTxtFieldFocusLost
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void senhaTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaTxtFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_senhaTxtFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,9 +200,9 @@ public class TelaLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton loginBTN;
     private javax.swing.JButton registBTN;
+    private javax.swing.JTextField senhaTxtField;
     private javax.swing.JTextField userTxtField;
     // End of variables declaration//GEN-END:variables
 }

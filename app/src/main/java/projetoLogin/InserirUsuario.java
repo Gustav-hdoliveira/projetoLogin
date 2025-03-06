@@ -6,6 +6,7 @@ package projetoLogin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -13,12 +14,23 @@ import java.sql.SQLException;
  * @author GUSTAVOHENRIQUEDEOLI
  */
 public class InserirUsuario {
-    public static void inserirUsuario(Connection conexao, String nome, String senha) throws SQLException{
+    public static void inserirUsuario(Connection conexao, String nome, String senha) throws SQLException {
         String sql = "INSERT INTO usuarios (nome, senha) VALUES (?, ?)";
         
         try(PreparedStatement pstmt = conexao.prepareStatement(sql)){
+            
             pstmt.setString(1, nome); // Substitui o primeiro ? por 'nome'
             pstmt.setString(2, senha);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+           
+               String nomeArmazenado = rs.getString("nome");
+               
+               if(nome.equals(nomeArmazenado)) {
+                   System.out.println("Usuário com o mesmo nome encontrado, cadastro não pode ser efetuado");
+                   return;
+               }
+            }
             pstmt.executeUpdate();
             
             System.out.println("Usuário inserido com sucesso");
