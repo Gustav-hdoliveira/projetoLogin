@@ -14,28 +14,25 @@ import java.sql.SQLException;
  * @author GUSTAVOHENRIQUEDEOLI
  */
 public class InserirUsuario {
-    public static void inserirUsuario(Connection conexao, String nome, String senha) throws SQLException {
+    public static void inserirUsuario(Connection conexao, String nome, String senha) {
         String sql = "INSERT INTO usuarios (nome, senha) VALUES (?, ?)";
+        if(BuscarUsuario.buscarUsuario(conexao, nome)){
+            System.out.println("Usuario ja cadastrado.");
+            return;
+        }
         
         try(PreparedStatement pstmt = conexao.prepareStatement(sql)){
             
             pstmt.setString(1, nome); // Substitui o primeiro ? por 'nome'
             pstmt.setString(2, senha);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-           
-               String nomeArmazenado = rs.getString("nome");
-               
-               if(nome.equals(nomeArmazenado)) {
-                   System.out.println("Usuário com o mesmo nome encontrado, cadastro não pode ser efetuado");
-                   return;
-               }
-            }
+            //ResultSet rs = pstmt.executeQuery();
+            
             pstmt.executeUpdate();
             
             System.out.println("Usuário inserido com sucesso");
         } catch (Exception e){
             System.out.println("Erro ao inserir usuario: " + e.getMessage());
         }
+        
     }
 }

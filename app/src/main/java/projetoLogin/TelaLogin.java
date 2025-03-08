@@ -133,17 +133,21 @@ public class TelaLogin extends javax.swing.JFrame {
     private void loginBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBTNActionPerformed
         String nomeUser = userTxtField.getText();
         String senhaUser = senhaTxtField.getText();
-        BuscarUsuario.buscarUsuario(conexao, nomeUser, senhaUser);
+        if (BuscarUsuario.buscarUsuario(conexao, nomeUser)) {
+        String[] arrayUser = BuscarUsuario.buscarDadosUsuario(conexao, nomeUser);
+        new TelaUsuario(arrayUser[0], arrayUser[1], arrayUser[2]).setVisible(true);
+        this.dispose();
+        }
+        
+        
+        
     }//GEN-LAST:event_loginBTNActionPerformed
 
     private void registBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registBTNActionPerformed
-        try {
-            String nome = userTxtField.getText();
-            String senha = senhaTxtField.getText();
-            InserirUsuario.inserirUsuario(conexao, nome, senha);
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        String nome = userTxtField.getText();
+        String senha = senhaTxtField.getText();
+        InserirUsuario.inserirUsuario(conexao, nome, senha);
     }//GEN-LAST:event_registBTNActionPerformed
 
     private void userTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userTxtFieldFocusGained
